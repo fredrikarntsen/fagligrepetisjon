@@ -1,0 +1,43 @@
+{
+  "fagdata": [
+    {
+      "id": "biologi",
+      "navn": "Biologi",
+      "emner": [
+        {
+          "id": "cellebiologi",
+          "tittel": "Emne: Cellebiologi",
+          "kort": [
+            {
+              "kort_id": "kort-1",
+              "tittel": "Lysbilde 1: Hva er en Celle?",
+              "type": "lysbilde",
+              "innhold_src": "placeholder_1.jpg",
+              "tekst": "Alle levende organismer er bygget opp av celler. Her får du en introduksjon til de grunnleggende typene.",
+              "notat": "Viktig: Mitokondriene er cellens kraftverk. Må lære formelen for celleånding!",
+              "kommentar": "Lærer S: Husk å skille mellom prokaryote og eukaryote celler! Definisjon: **Organelle** – Et spesialisert underavsnitt av en celle."
+            },
+            {
+              "kort_id": "kort-2",
+              "tittel": "Lysbilde 2: Cellekjernen og DNA",
+              "type": "lysbilde",
+              "innhold_src": "placeholder_2.jpg",
+              "tekst": "Cellekjernen inneholder arvestoffet DNA, som er oppskriften på organismen.",
+              "notat": "Husk forskjell på DNA og RNA, og hvor de ligger i cellen.",
+              "kommentar": "Elev A: Er DNA det samme i alle cellene mine? Svar: Ja, i utgangspunktet."
+            },
+            {
+              "kort_id": "kort-3",
+              "tittel": "Video/Lysbilde 3: Mitokondriene – Kraftverket",
+              "type": "video",
+              "innhold_src": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+              "tekst": "Mitokondriene produserer energien (ATP) cellen trenger gjennom celleånding.",
+              "notat": "Sjekk ut videoen om Mitose på YouTube for bedre forståelse.",
+              "kommentar": "Definisjon: **ATP** – Adenosintrifosfat. Cellenes energi-valuta."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
