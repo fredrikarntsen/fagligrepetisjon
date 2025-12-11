@@ -36,6 +36,63 @@
               "kommentar": "Definisjon: **ATP** – Adenosintrifosfat. Cellenes energi-valuta."
             }
           ]
+        },
+        {
+          "id": "gener",
+          "tittel": "Emne: Gener og Arv",
+          "kort": [
+            {
+              "kort_id": "g-kort-1",
+              "tittel": "Introduksjon til Mendels Genetikk",
+              "type": "lysbilde",
+              "innhold_src": "placeholder_3.jpg",
+              "tekst": "Gregor Mendel la grunnlaget for den moderne genetikken gjennom sine studier av erteplanter.",
+              "notat": "Hovedbegreper: Homozygot, heterozygot, dominant og recessiv.",
+              "kommentar": "Lærer S: En Punnett-kvadrat er et nyttig verktøy for å visualisere krysninger."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kjemi",
+      "navn": "Kjemi",
+      "emner": [
+        {
+          "id": "periodesystemet",
+          "tittel": "Emne: Periodesystemet",
+          "kort": [
+            {
+              "kort_id": "k-kort-1",
+              "tittel": "Lysbilde 1: Atomets Oppbygging",
+              "type": "lysbilde",
+              "innhold_src": "placeholder_kjemi_1.jpg",
+              "tekst": "Et atom består av en kjerne (protoner og nøytroner) og elektroner i skall rundt kjernen.",
+              "notat": "Antall protoner bestemmer atomets grunnstoff.",
+              "kommentar": "Definisjon: **Isotoper** – Atomer av samme grunnstoff med ulikt antall nøytroner."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fysikk",
+      "navn": "Fysikk",
+      "emner": [
+        {
+          "id": "bevegelseslære",
+          "tittel": "Emne: Bevegelseslære",
+          "kort": [
+            {
+              "kort_id": "f-kort-1",
+              "tittel": "Lysbilde 1: Newtons lover",
+              "type": "lysbilde",
+              "innhold_src": "placeholder_fysikk_1.jpg",
+              "tekst": "Vi starter med Newtons første lov: Treghetsloven.",
+              "notat": "Nøkkelfaktor: Massen er et mål på treghet.",
+              "kommentar": "Lærer K: Se YouTube-videoen om Newtons andre lov ($F = ma$) for eksamensforberedelse."
+            }
+          ]
         }
       ]
     }
