@@ -3,33 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repetisjonsportalen – Naturfag</title>
+    <title>Repetisjonsportalen – Fagvelger</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <section id="boble-navigasjon">
-        <h1>Velg Fagområde for Repetisjon</h1>
-        <div class="boble-container">
+    <section id="hovedfag-velger">
+        <h1>Velg Fagkategori</h1>
+        <div class="fagvelger-container">
             
-            <a href="#" class="boble boble-fysikk" data-fag-id="fysikk">
-                Fysikk
-            </a>
+            <button class="hovedfag-knapp" data-hovedfag-id="naturfag">
+                🧬 Naturfag
+            </button>
 
-            <a href="#" class="boble boble-kjemi" data-fag-id="kjemi">
-                Kjemi
-            </a>
-            
-            <a href="#" class="boble boble-biologi" data-fag-id="biologi">
-                Biologi
-            </a>
+            <button class="hovedfag-knapp" data-hovedfag-id="samfunnsfag">
+                🏛️ Samfunnsfag
+            </button>
+
+            <button class="hovedfag-knapp" data-hovedfag-id="krle">
+                🕊️ KRLE
+            </button>
         </div>
+    </section>
+    
+    <section id="boble-navigasjon" style="display: none;">
+        <header>
+            <button onclick="visHovedfagVelger()">← Tilbake til Hovedfag</button>
+            <h2 id="boble-tittel">Fagområder i [Fag]</h2>
+        </header>
+        <div class="boble-container">
+            </div>
     </section>
 
     <section id="emnevisning-container" style="display: none;">
         <header>
-            <button onclick="visBobleNavigasjon()">← Tilbake til Fagvelger</button>
-            <h2>Emne: Cellebiologi</h2> 
+            <button onclick="visBobleNavigasjon()">← Tilbake til Fagområder</button>
+            <h2 id="emnevisning-tittel">Emne: Cellebiologi</h2> 
         </header>
         
         <main class="tre-kolonne-grid" id="emne-innhold">
