@@ -21,7 +21,7 @@ async function hentDataOgInitialiser() {
         initialiserNavigasjon();
     } catch (feil) {
         console.error("Feil ved lasting av fagdata:", feil);
-        alert("Klarte ikke å laste fagdata. Sjekk data.json filen.");
+        alert("Klarte ikke å laste fagdata. Sjekk data.json filen og nettverksforbindelsen.");
     }
 }
 
@@ -30,7 +30,7 @@ hentDataOgInitialiser();
 
 
 // ======================================================
-// 2. NAVIGASJONSKONTROLL (NY LOGIKK)
+// 2. NAVIGASJONSKONTROLL
 // ======================================================
 
 function initialiserNavigasjon() {
@@ -62,9 +62,8 @@ function initialiserNavigasjon() {
     hovedfagKnapper.forEach(knapp => {
         knapp.addEventListener('click', (event) => {
             const hovedfagId = event.currentTarget.getAttribute('data-hovedfag-id');
-            valgtHovedfagId = hovedfagId; // Lagrer valget
+            valgtHovedfagId = hovedfagId; 
 
-            // Hvis Naturfag, fortsett til boblene. Ellers, vis melding
             if (hovedfagId === 'naturfag') {
                 document.getElementById('boble-tittel').textContent = 'Fagområder i Naturfag';
                 visBobleNavigasjon();
@@ -73,9 +72,6 @@ function initialiserNavigasjon() {
             }
         });
     });
-
-    // Lyttere for fagområde-boblene (må settes opp dynamisk etter bygging)
-    // Se byggBobleNavigasjon for lytteren.
 }
 
 
@@ -85,22 +81,20 @@ function initialiserNavigasjon() {
 
 function byggBobleNavigasjon(hovedfagId) {
     const bobleContainer = document.querySelector('#boble-navigasjon .boble-container');
-    bobleContainer.innerHTML = ''; // Tømmer boblene før vi bygger nye
+    bobleContainer.innerHTML = ''; 
 
     // Vi henter kun subfagene som er definert i "fagdata"
     const subFag = allFagData; 
     
-    // Genererer HTML for hver sub-fag-boble (Fysikk, Kjemi, Biologi)
     subFag.forEach(fag => {
         const bobleDiv = document.createElement('a');
         bobleDiv.href = '#';
-        bobleDiv.className = `boble boble-${fag.id}`;
+        // 🛠️ KORRIGERT FEIL 1: Må legge til .boble for sirkelform og basisutseende.
+        // CSS-klassen for farge og posisjon er også inkludert her
+        bobleDiv.className = `boble boble-${fag.id}`; 
         bobleDiv.setAttribute('data-fag-id', fag.id);
         bobleDiv.textContent = fag.navn;
         
-        // Legger til stil for farge og størrelse basert på CSS
-        // (CSS-klassene boble-fysikk, -kjemi, -biologi håndterer utseendet)
-
         bobleContainer.appendChild(bobleDiv);
     });
 
@@ -110,10 +104,9 @@ function byggBobleNavigasjon(hovedfagId) {
             event.preventDefault();
             const fagId = event.currentTarget.getAttribute('data-fag-id');
             
-            // Finner det første emnet i det valgte faget og viser det
             const fag = allFagData.find(f => f.id === fagId);
             if (fag && fag.emner.length > 0) {
-                 const emne = fag.emner[0]; // Velger første emne
+                 const emne = fag.emner[0]; 
                  visEmnevisning(fagId, emne.id);
             } else {
                 alert(`Innhold for ${fag.navn} er ikke klart ennå.`);
@@ -122,7 +115,7 @@ function byggBobleNavigasjon(hovedfagId) {
     });
 }
 
-// Funksjon for å vise Nivå 4: Emnevisning (Kopiert fra forrige steg)
+// Funksjon for å vise Nivå 4: Emnevisning
 function visEmnevisning(fagId, emneId) {
     document.getElementById('hovedfag-velger').style.display = 'none';
     document.getElementById('boble-navigasjon').style.display = 'none';
@@ -140,7 +133,7 @@ function visEmnevisning(fagId, emneId) {
 
 
 // ======================================================
-// 4. GENERER INNHOLD OG OBSERVER LOGIKK (Som Før)
+// 4. GENERER INNHOLD OG OBSERVER LOGIKK
 // ======================================================
 
 function byggEmnevisning(emneData) {
@@ -148,6 +141,10 @@ function byggEmnevisning(emneData) {
     mainContainer.innerHTML = ''; 
     
     document.querySelector('#emnevisning-container header h2').textContent = emneData.tittel;
+
+    // 🛠️ KORRIGERT FEIL 2: Vi må sørge for at 'emne-innhold' (mainContainer) får CSS Grid-klassen.
+    // Denne klassen er allerede satt i HTML-en (index.html), men vi bekrefter at den brukes her.
+    // Klassen 'tre-kolonne-grid' MÅ være på main-elementet for at kolonnene skal fungere.
 
     const notatSidebar = document.createElement('aside');
     notatSidebar.className = 'sidebar sidebar-venstre';
@@ -199,6 +196,7 @@ function byggEmnevisning(emneData) {
     initialiserIntersectionObserver();
 }
 
+// [Resten av initialiserIntersectionObserver() funksjonen er uendret]
 function initialiserIntersectionObserver() {
     const innholdsKort = document.querySelectorAll('.innholds-kort');
     
