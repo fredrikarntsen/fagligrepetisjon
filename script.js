@@ -1,5 +1,8 @@
 // Global variabel for å holde all fagdata
 let allFagData = [];
+// Variabel for å holde styr på hvilket hovedfag som er valgt
+let valgtHovedfagId = null; 
+
 
 // ======================================================
 // 1. DATAHENTING OG INITIALISERING
@@ -15,11 +18,10 @@ async function hentDataOgInitialiser() {
         allFagData = data.fagdata;
         console.log("Data lastet og klar for navigasjon.");
 
-        // Fortsett med å initialisere navigasjonslogikken etter at data er hentet
         initialiserNavigasjon();
     } catch (feil) {
         console.error("Feil ved lasting av fagdata:", feil);
-        alert("Klarte ikke å laste fagdata. Sjekk data.json filen og nettverksforbindelsen.");
+        alert("Klarte ikke å laste fagdata. Sjekk data.json filen.");
     }
 }
 
@@ -28,67 +30,125 @@ hentDataOgInitialiser();
 
 
 // ======================================================
-// 2. NAVIGASJON OG VISNINGSKONTROLL (Nå dynamisk)
+// 2. NAVIGASJONSKONTROLL (NY LOGIKK)
 // ======================================================
 
 function initialiserNavigasjon() {
+    const hovedFagVelger = document.getElementById('hovedfag-velger');
     const bobleNav = document.getElementById('boble-navigasjon');
     const emneVisning = document.getElementById('emnevisning-container');
-    const bobleLenker = document.querySelectorAll('.boble');
-
-    // Funksjon for å vise emnevisning basert på valg
-    function visEmnevisning(fagId) {
-        const fag = allFagData.find(f => f.id === fagId);
-        
-        if (fag && fag.emner.length > 0) {
-            // Vi velger det FØRSTE emnet i faget for å starte visningen
-            const emne = fag.emner[0]; 
-
-            bobleNav.style.display = 'none';
-            emneVisning.style.display = 'block';
-
-            // Bygger innholdet basert på den hentede dataen
-            byggEmnevisning(emne);
-        } else {
-            alert(`Fag ${fagId} ble funnet, men inneholder ingen emner.`);
-            console.error(`Fag ${fagId} er tomt.`);
-        }
+    const hovedfagKnapper = document.querySelectorAll('.hovedfag-knapp');
+    
+    // Funksjon for å vise Nivå 1: Hovedfagvelger
+    window.visHovedfagVelger = function() {
+        hovedFagVelger.style.display = 'block';
+        bobleNav.style.display = 'none';
+        emneVisning.style.display = 'none';
     }
 
-    // Setter opp event-lyttere for boblene
-    bobleLenker.forEach(boble => {
-        boble.addEventListener('click', (event) => {
-            event.preventDefault();
-            
-            // Lese ID-en fra det nye data-attributtet
-            const fagId = event.currentTarget.getAttribute('data-fag-id'); 
-            visEmnevisning(fagId);
+    // Funksjon for å vise Nivå 2: Boble-navigasjon
+    window.visBobleNavigasjon = function() {
+        hovedFagVelger.style.display = 'none';
+        bobleNav.style.display = 'block';
+        emneVisning.style.display = 'none';
+        // Henter bobler basert på sist valgt hovedfag
+        byggBobleNavigasjon(valgtHovedfagId);
+    }
+
+    // Starter med Hovedfagvelgeren
+    visHovedfagVelger(); 
+
+    // Setter opp event-lyttere for Hovedfag-knappene
+    hovedfagKnapper.forEach(knapp => {
+        knapp.addEventListener('click', (event) => {
+            const hovedfagId = event.currentTarget.getAttribute('data-hovedfag-id');
+            valgtHovedfagId = hovedfagId; // Lagrer valget
+
+            // Hvis Naturfag, fortsett til boblene. Ellers, vis melding
+            if (hovedfagId === 'naturfag') {
+                document.getElementById('boble-tittel').textContent = 'Fagområder i Naturfag';
+                visBobleNavigasjon();
+            } else {
+                alert(`Innhold for ${hovedfagId} er ikke klart ennå.`);
+            }
         });
     });
 
-    // Funksjon for å vise bobler og skjule emnevisning (brukes av "Tilbake"-knappen)
-    window.visBobleNavigasjon = function() {
-        bobleNav.style.display = 'block';
-        emneVisning.style.display = 'none';
-    };
-
-    // Starter med å vise boblene
-    visBobleNavigasjon();
+    // Lyttere for fagområde-boblene (må settes opp dynamisk etter bygging)
+    // Se byggBobleNavigasjon for lytteren.
 }
 
 
 // ======================================================
-// 3. GENERER INNHOLD FRA DATA
+// 3. GENERER BOBLE-INNHOLD (NIVÅ 2)
+// ======================================================
+
+function byggBobleNavigasjon(hovedfagId) {
+    const bobleContainer = document.querySelector('#boble-navigasjon .boble-container');
+    bobleContainer.innerHTML = ''; // Tømmer boblene før vi bygger nye
+
+    // Vi henter kun subfagene som er definert i "fagdata"
+    const subFag = allFagData; 
+    
+    // Genererer HTML for hver sub-fag-boble (Fysikk, Kjemi, Biologi)
+    subFag.forEach(fag => {
+        const bobleDiv = document.createElement('a');
+        bobleDiv.href = '#';
+        bobleDiv.className = `boble boble-${fag.id}`;
+        bobleDiv.setAttribute('data-fag-id', fag.id);
+        bobleDiv.textContent = fag.navn;
+        
+        // Legger til stil for farge og størrelse basert på CSS
+        // (CSS-klassene boble-fysikk, -kjemi, -biologi håndterer utseendet)
+
+        bobleContainer.appendChild(bobleDiv);
+    });
+
+    // Setter opp lyttere for de nye boblene
+    document.querySelectorAll('#boble-navigasjon .boble').forEach(boble => {
+        boble.addEventListener('click', (event) => {
+            event.preventDefault();
+            const fagId = event.currentTarget.getAttribute('data-fag-id');
+            
+            // Finner det første emnet i det valgte faget og viser det
+            const fag = allFagData.find(f => f.id === fagId);
+            if (fag && fag.emner.length > 0) {
+                 const emne = fag.emner[0]; // Velger første emne
+                 visEmnevisning(fagId, emne.id);
+            } else {
+                alert(`Innhold for ${fag.navn} er ikke klart ennå.`);
+            }
+        });
+    });
+}
+
+// Funksjon for å vise Nivå 4: Emnevisning (Kopiert fra forrige steg)
+function visEmnevisning(fagId, emneId) {
+    document.getElementById('hovedfag-velger').style.display = 'none';
+    document.getElementById('boble-navigasjon').style.display = 'none';
+    document.getElementById('emnevisning-container').style.display = 'block';
+
+    const fag = allFagData.find(f => f.id === fagId);
+    const emne = fag.emner.find(e => e.id === emneId);
+
+    if (emne) {
+        byggEmnevisning(emne);
+    } else {
+        console.error(`Emne ${emneId} ikke funnet.`);
+    }
+}
+
+
+// ======================================================
+// 4. GENERER INNHOLD OG OBSERVER LOGIKK (Som Før)
 // ======================================================
 
 function byggEmnevisning(emneData) {
     const mainContainer = document.getElementById('emne-innhold');
-    mainContainer.innerHTML = ''; // Tømmer alt gammelt innhold
+    mainContainer.innerHTML = ''; 
     
-    // Oppdaterer tittel i header
     document.querySelector('#emnevisning-container header h2').textContent = emneData.tittel;
 
-    // Oppretting av kolonne-elementene (strukturert for å matche CSS Grid)
     const notatSidebar = document.createElement('aside');
     notatSidebar.className = 'sidebar sidebar-venstre';
     notatSidebar.innerHTML = '<h3>📝 Mine Notater</h3>';
@@ -100,16 +160,13 @@ function byggEmnevisning(emneData) {
     kommentarSidebar.className = 'sidebar sidebar-hoyre';
     kommentarSidebar.innerHTML = '<h3>💬 Diskusjon & Definisjoner</h3>';
 
-    // Loop gjennom hvert kort i emnet
     emneData.kort.forEach((kort, index) => {
         const isFirst = index === 0;
 
-        /* Bygg Hovedinnholdskort (Midten) */
         let innholdHTML = '';
         if (kort.type === 'lysbilde' || kort.type === 'bilde') {
             innholdHTML = `<img src="${kort.innhold_src}" alt="${kort.tittel}" class="lysbildefremvisning">`;
         } else if (kort.type === 'video') {
-            // For videoer bruker vi iframe med kilden fra JSON
             innholdHTML = `<iframe width="100%" height="315" src="${kort.innhold_src}" title="${kort.tittel}" frameborder="0" allowfullscreen></iframe>`;
         }
         
@@ -122,14 +179,12 @@ function byggEmnevisning(emneData) {
             </div>
         `;
 
-        /* Bygg Notat-element (Venstre Sidebar) */
         notatSidebar.innerHTML += `
             <div class="notat-innhold" data-target-id="${kort.kort_id}" style="display: ${isFirst ? 'block' : 'none'};">
                 <p>${kort.notat}</p>
             </div>
         `;
 
-        /* Bygg Kommentar-element (Høyre Sidebar) */
         kommentarSidebar.innerHTML += `
             <div class="kommentar-innhold" data-target-id="${kort.kort_id}" style="display: ${isFirst ? 'block' : 'none'};">
                 <p>${kort.kommentar}</p>
@@ -137,24 +192,17 @@ function byggEmnevisning(emneData) {
         `;
     });
 
-    // Legg til de tre kolonnene i hovedcontaineren
     mainContainer.appendChild(notatSidebar);
     mainContainer.appendChild(innholdsFeed);
     mainContainer.appendChild(kommentarSidebar);
 
-    // Initialiser Intersection Observer etter at kortene er bygget
     initialiserIntersectionObserver();
 }
 
-// ======================================================
-// 4. INTERSECTION OBSERVER LOGIKK
-// ======================================================
-
 function initialiserIntersectionObserver() {
-    // Denne funksjonen må kalles ETTER at innholds-kortene er bygget i DOM-en
     const innholdsKort = document.querySelectorAll('.innholds-kort');
     
-    if (innholdsKort.length === 0) return; // Avslutt hvis det ikke er kort
+    if (innholdsKort.length === 0) return;
 
     const observerOptions = {
         root: null, 
