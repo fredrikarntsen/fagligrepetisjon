@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repetisjonsportalen – Naturfag</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <section id="boble-navigasjon">
+        <h1>Velg Fagområde for Repetisjon</h1>
+        <div class="boble-container">
+            
+            <a href="#emnevisning-biologi" class="boble boble-fysikk">
+                Fysikk
+            </a>
+
+            <a href="#emnevisning-biologi" class="boble boble-kjemi">
+                Kjemi
+            </a>
+            
+            <a href="#emnevisning-biologi" class="boble boble-biologi">
+                Biologi
+            </a>
+        </div>
+    </section>
+
+    <section id="emnevisning-container" style="display: none;">
+        <header>
+            <button onclick="visBobleNavigasjon()">← Tilbake til Fagvelger</button>
+            <h2>Emne: Cellebiologi (under Biologi)</h2>
+        </header>
+        
+        <main class="tre-kolonne-grid">
+            
+            <aside class="sidebar sidebar-venstre">
+                <h3>📝 Mine Notater</h3>
+                
+                <div class="notat-innhold" data-target-id="kort-1" style="display: block;">
+                    <p>Viktig: Mitokondriene er cellens kraftverk. Må lære formelen for celleånding!</p>
+                </div>
+                
+                <div class="notat-innhold" data-target-id="kort-2" style="display: none;">
+                    <p>Husk forskjell på DNA og RNA, og hvor de ligger i cellen.</p>
+                </div>
+
+                <div class="notat-innhold" data-target-id="kort-3" style="display: none;">
+                    <p>Sjekk ut videoen om Mitose på YouTube for bedre forståelse.</p>
+                </div>
+
+            </aside>
+
+            <div class="hovedinnhold-feed">
+                
+                <div class="innholds-kort" id="kort-1">
+                    <h4>Lysbilde 1: Hva er en Celle?</h4>
+                    <img src="placeholder_1.jpg" alt="Bilde av celle" class="lysbildefremvisning">
+                    <p>Alle levende organismer er bygget opp av celler. Her får du en introduksjon til de grunnleggende typene.</p>
+                    <div style="height: 300px;"></div> </div>
+                
+                <div class="innholds-kort" id="kort-2">
+                    <h4>Lysbilde 2: Cellekjernen og DNA</h4>
+                    <img src="placeholder_2.jpg" alt="Bilde av DNA" class="lysbildefremvisning">
+                    <p>Cellekjernen inneholder arvestoffet DNA, som er oppskriften på organismen.</p>
+                    <div style="height: 300px;"></div>
+                </div>
+
+                <div class="innholds-kort" id="kort-3">
+                    <h4>Video/Lysbilde 3: Mitokondriene – Kraftverket</h4>
+                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+                    <p>Mitokondriene produserer energien (ATP) cellen trenger gjennom celleånding.</p>
+                    <div style="height: 300px;"></div>
+                </div>
+                
+            </div>
+
+            <aside class="sidebar sidebar-hoyre">
+                <h3>💬 Diskusjon & Definisjoner</h3>
+                
+                <div class="kommentar-innhold" data-target-id="kort-1" style="display: block;">
+                    <p><b>Lærer S:</b> Husk å skille mellom prokaryote og eukaryote celler!</p>
+                    <p>Definisjon: **Organelle** – Et spesialisert underavsnitt av en celle.</p>
+                </div>
+                
+                <div class="kommentar-innhold" data-target-id="kort-2" style="display: none;">
+                    <p><b>Elev A:</b> Er DNA det samme i alle cellene mine?</p>
+                    <p>Svar: Ja, i utgangspunktet.</p>
+                </div>
+
+                <div class="kommentar-innhold" data-target-id="kort-3" style="display: none;">
+                    <p>Definisjon: **ATP** – Adenosintrifosfat. Cellenes energi-valuta.</p>
+                </div>
+            </aside>
+        </main>
+    </section>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
