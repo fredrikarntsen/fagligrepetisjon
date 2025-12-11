@@ -13,14 +13,13 @@ async function hentDataOgInitialiser() {
         }
         const data = await respons.json();
         allFagData = data.fagdata;
-        console.log("Data lastet:", allFagData);
+        console.log("Data lastet og klar for navigasjon.");
 
         // Fortsett med å initialisere navigasjonslogikken etter at data er hentet
         initialiserNavigasjon();
     } catch (feil) {
         console.error("Feil ved lasting av fagdata:", feil);
-        // Vis en feilmelding til brukeren hvis data ikke lastes
-        alert("Klarte ikke å laste fagdata. Sjekk data.json filen.");
+        alert("Klarte ikke å laste fagdata. Sjekk data.json filen og nettverksforbindelsen.");
     }
 }
 
@@ -29,7 +28,7 @@ hentDataOgInitialiser();
 
 
 // ======================================================
-// 2. NAVIGASJON OG VISNINGSKONTROLL
+// 2. NAVIGASJON OG VISNINGSKONTROLL (Nå dynamisk)
 // ======================================================
 
 function initialiserNavigasjon() {
@@ -37,31 +36,37 @@ function initialiserNavigasjon() {
     const emneVisning = document.getElementById('emnevisning-container');
     const bobleLenker = document.querySelectorAll('.boble');
 
-    function visEmnevisning(fagId, emneId) {
-        bobleNav.style.display = 'none';
-        emneVisning.style.display = 'block';
-
-        // Finner dataen for det valgte emnet
+    // Funksjon for å vise emnevisning basert på valg
+    function visEmnevisning(fagId) {
         const fag = allFagData.find(f => f.id === fagId);
-        const emne = fag.emner.find(e => e.id === emneId);
+        
+        if (fag && fag.emner.length > 0) {
+            // Vi velger det FØRSTE emnet i faget for å starte visningen
+            const emne = fag.emner[0]; 
 
-        // Bygger innholdet basert på den hentede dataen
-        if (emne) {
+            bobleNav.style.display = 'none';
+            emneVisning.style.display = 'block';
+
+            // Bygger innholdet basert på den hentede dataen
             byggEmnevisning(emne);
         } else {
-            console.error(`Emne ${emneId} ikke funnet i fag ${fagId}.`);
+            alert(`Fag ${fagId} ble funnet, men inneholder ingen emner.`);
+            console.error(`Fag ${fagId} er tomt.`);
         }
     }
 
+    // Setter opp event-lyttere for boblene
     bobleLenker.forEach(boble => {
         boble.addEventListener('click', (event) => {
             event.preventDefault();
             
-            // For testing klikker vi på Biologi, som skal vise Cellebiologi (hardkodet for nå)
-            visEmnevisning('biologi', 'cellebiologi');
+            // Lese ID-en fra det nye data-attributtet
+            const fagId = event.currentTarget.getAttribute('data-fag-id'); 
+            visEmnevisning(fagId);
         });
     });
 
+    // Funksjon for å vise bobler og skjule emnevisning (brukes av "Tilbake"-knappen)
     window.visBobleNavigasjon = function() {
         bobleNav.style.display = 'block';
         emneVisning.style.display = 'none';
@@ -83,7 +88,7 @@ function byggEmnevisning(emneData) {
     // Oppdaterer tittel i header
     document.querySelector('#emnevisning-container header h2').textContent = emneData.tittel;
 
-    // Bygg opp HTML for de tre kolonnene
+    // Oppretting av kolonne-elementene (strukturert for å matche CSS Grid)
     const notatSidebar = document.createElement('aside');
     notatSidebar.className = 'sidebar sidebar-venstre';
     notatSidebar.innerHTML = '<h3>📝 Mine Notater</h3>';
@@ -104,6 +109,7 @@ function byggEmnevisning(emneData) {
         if (kort.type === 'lysbilde' || kort.type === 'bilde') {
             innholdHTML = `<img src="${kort.innhold_src}" alt="${kort.tittel}" class="lysbildefremvisning">`;
         } else if (kort.type === 'video') {
+            // For videoer bruker vi iframe med kilden fra JSON
             innholdHTML = `<iframe width="100%" height="315" src="${kort.innhold_src}" title="${kort.tittel}" frameborder="0" allowfullscreen></iframe>`;
         }
         
@@ -112,7 +118,8 @@ function byggEmnevisning(emneData) {
                 <h4>${kort.tittel}</h4>
                 ${innholdHTML}
                 <p>${kort.tekst}</p>
-                <div style="height: 300px;"></div> </div>
+                <div style="height: 300px;"></div>
+            </div>
         `;
 
         /* Bygg Notat-element (Venstre Sidebar) */
@@ -144,6 +151,7 @@ function byggEmnevisning(emneData) {
 // ======================================================
 
 function initialiserIntersectionObserver() {
+    // Denne funksjonen må kalles ETTER at innholds-kortene er bygget i DOM-en
     const innholdsKort = document.querySelectorAll('.innholds-kort');
     
     if (innholdsKort.length === 0) return; // Avslutt hvis det ikke er kort
@@ -155,7 +163,6 @@ function initialiserIntersectionObserver() {
     };
     
     function synkroniserSidebars(targetId) {
-        // Funksjon for å synkronisere sidepanel-innholdet
         
         const sidebars = [
             { class: 'sidebar-venstre', contentClass: 'notat-innhold' },
