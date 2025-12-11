@@ -1,184 +1,47 @@
 /* ============================================== */
-/* 0. GRUNNLEGGENDE STYLER OG RESET */
+/* NY STIL FOR HOVEDFAG-VELGER (NIVÅ 1) */
 /* ============================================== */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    margin: 0;
-    padding: 0;
-    background-color: #f4f7f6; /* Lys grå bakgrunn */
-    color: #333;
-    line-height: 1.6;
-}
 
-h1, h2, h3, h4 {
-    color: #2c3e50;
-    margin-top: 0;
-}
-
-header {
-    padding: 20px 0;
+#hovedfag-velger {
     text-align: center;
-    background-color: #ffffff;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 30px;
-}
-
-/* ============================================== */
-/* 1. BOBLE-NAVIGASJON STYLER */
-/* ============================================== */
-
-#boble-navigasjon {
-    text-align: center;
-    padding: 40px 20px;
+    padding: 60px 20px;
     min-height: 90vh;
 }
 
-.boble-container {
-    position: relative; /* Referansepunkt for boblenes absolutte posisjon */
-    min-height: 70vh; /* Sørger for at boblene har plass til å spre seg */
-    width: 90%;
-    max-width: 1200px;
-    margin: 40px auto;
-}
-
-/* Keyframe for den pulserende animasjonen */
-@keyframes puls {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-    100% { transform: scale(1); }
-}
-
-.boble {
-    /* Sirkel-egenskaper */
-    border-radius: 50%; 
+.fagvelger-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    text-align: center;
-    text-decoration: none;
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    
-    /* Posisjon og Animasjon */
-    position: absolute; /* Absolutt plassering */
-    transition: all 0.4s ease-in-out;
-    animation: puls 4s infinite ease-in-out; /* Starter pulserende animasjon */
+    gap: 30px;
+    margin-top: 50px;
 }
 
-/* Boble-farger, størrelse og UNIK plassering */
-
-/* 🟢 Fysikk Boble */
-.boble-fysikk {
-    width: 200px;
-    height: 200px;
-    background-color: #3498db; /* Blå */
+.hovedfag-knapp {
+    padding: 25px 40px;
     font-size: 1.5em;
-    top: 10%; 
-    left: 15%; 
-    animation-delay: 0s;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: #3498db; /* Blå */
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
-/* 🟡 Kjemi Boble */
-.boble-kjemi {
-    width: 150px;
-    height: 150px;
-    background-color: #f1c40f; /* Gul */
-    font-size: 1.2em;
-    top: 50%; 
-    right: 10%; 
-    transform: translateY(-50%); 
-    animation-delay: 0.5s;
+.hovedfag-knapp:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* 🔴 Biologi Boble */
-.boble-biologi {
-    width: 240px;
-    height: 240px;
-    background-color: #2ecc71; /* Grønn */
-    font-size: 1.8em;
-    bottom: 5%; 
-    left: 40%; 
-    animation-delay: 1s;
-}
-
-/* Hover-effekt */
-.boble:hover {
-    transform: scale(1.1); 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-    z-index: 10; 
-    animation: none; /* Stopper pulsen ved hover */
-}
-
-/* ============================================== */
-/* 2. 3-KOLONNE EMNEVISNING STYLER */
-/* ============================================== */
-
-#emnevisning-container {
-    padding: 0 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-/* CSS Grid for 3-kolonne layout */
-.tre-kolonne-grid {
-    display: grid;
-    /* Definerer tre kolonner: 20% (venstre sidebar) 60% (hovedinnhold) 20% (høyre sidebar) */
-    grid-template-columns: 20% 60% 20%; 
-    gap: 30px; 
-}
-
-/* Stilen for de faste, "sticky" sidebarene */
-.sidebar {
-    padding: 15px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-    
-    /* NØKKELEN: Holder sidebaren i synlig posisjon når midten scroller */
-    position: sticky; 
-    top: 20px; /* Avstand fra toppen av skjermen */
-    height: fit-content; /* Sørger for at sidebaren ikke strekker seg unødvendig */
-}
-
-.sidebar h3 {
-    border-bottom: 2px solid #ecf0f1;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-}
-
-/* Stilen for det scrollende innholdet i midten */
-.hovedinnhold-feed {
-    /* Dette elementet scroller normalt */
-}
-
-.innholds-kort {
-    border: 1px solid #ddd;
-    padding: 25px;
-    margin-bottom: 40px; /* Godt mellomrom mellom kortene */
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.lysbildefremvisning {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin: 15px 0;
-}
-
-/* Responsivitet: På mindre skjermer legges sidebarene under innholdet */
-@media (max-width: 1000px) {
-    .tre-kolonne-grid {
-        /* Endrer til én enkelt kolonne for å unngå smalt innhold */
-        grid-template-columns: 1fr; 
-    }
-    
-    .sidebar {
-        /* Fjern sticky-effekten på mobil/små skjermer */
-        position: static; 
-        margin-bottom: 20px;
-    }
+/* Stil for tilbake-knapper */
+header button {
+    background: none;
+    border: 1px solid #bdc3c7;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-right: auto; /* Dytter den til venstre */
 }
